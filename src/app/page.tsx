@@ -38,16 +38,10 @@ export default function Home() {
               <Card
                 name={coffeeStore.name}
                 imgUrl={coffeeStore.imgUrl}
-                // imgUrl="/static/hero-image.png"
                 href={`/coffee-store/${coffeeStore.id}`}
               />
             );
           })}
-          <Card
-            name="DarkHourse Coffee"
-            imgUrl="/static/hero-image.png"
-            href="/coffee-store/darkhorse-coffee"
-          />
         </div>
       </main>
     </div>
