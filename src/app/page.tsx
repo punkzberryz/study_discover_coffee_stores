@@ -2,7 +2,7 @@
 // from https://github.com/kulkarniankita/discover-coffee-stores
 import Head from "next/head";
 import Image from "next/image";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+
 import styles from "../styles/page.module.css";
 import Banner from "@/components/Banner";
 import Card from "@/components/Card";
@@ -13,19 +13,16 @@ interface HomeProps {
   coffeeStores: { id: number; name: string; imgUrl: string }[];
 }
 
-export async function getStaticProps<HomeProps>() {
-  console.log("hi getStatusprops!");
-  return {
-    props: {}, // will be passed to the page component as props
-  };
+async function getCoffeeStores() {
+  const coffeeStores = coffeeStoresData;
+  return coffeeStores;
 }
 
-export default function Home(
-  props: InferGetStaticPropsType<typeof getStaticProps>
-) {
+export default async function Home() {
+  const coffeeStores = await getCoffeeStores();
+
   const handleOnBannerBtnClick = () => {
     console.log("hi banner button");
-    console.log(props);
   };
 
   return (
@@ -47,11 +44,11 @@ export default function Home(
             alt="hero-image"
           />
         </div>
-        {coffeeStoresData.length > 0 && (
+        {coffeeStores.length > 0 && (
           <>
             <h2 className={styles.heading2}>Toronto stores</h2>
             <div className={styles.cardLayout}>
-              {coffeeStoresData.map((coffeeStore) => {
+              {coffeeStores.map((coffeeStore) => {
                 return (
                   <Card
                     key={coffeeStore.id}
