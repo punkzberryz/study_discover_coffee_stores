@@ -2,15 +2,30 @@
 // from https://github.com/kulkarniankita/discover-coffee-stores
 import Head from "next/head";
 import Image from "next/image";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import styles from "../styles/page.module.css";
 import Banner from "@/components/Banner";
 import Card from "@/components/Card";
 
-import coffeeStores from "../data/coffee-stores.json";
+import coffeeStoresData from "../data/coffee-stores.json";
 
-export default function Home() {
+interface HomeProps {
+  coffeeStores: { id: number; name: string; imgUrl: string }[];
+}
+
+export async function getStaticProps<HomeProps>() {
+  console.log("hi getStatusprops!");
+  return {
+    props: {}, // will be passed to the page component as props
+  };
+}
+
+export default function Home(
+  props: InferGetStaticPropsType<typeof getStaticProps>
+) {
   const handleOnBannerBtnClick = () => {
     console.log("hi banner button");
+    console.log(props);
   };
 
   return (
@@ -32,17 +47,23 @@ export default function Home() {
             alt="hero-image"
           />
         </div>
-        <div className={styles.cardLayout}>
-          {coffeeStores.map((coffeeStore) => {
-            return (
-              <Card
-                name={coffeeStore.name}
-                imgUrl={coffeeStore.imgUrl}
-                href={`/coffee-store/${coffeeStore.id}`}
-              />
-            );
-          })}
-        </div>
+        {coffeeStoresData.length > 0 && (
+          <>
+            <h2 className={styles.heading2}>Toronto stores</h2>
+            <div className={styles.cardLayout}>
+              {coffeeStoresData.map((coffeeStore) => {
+                return (
+                  <Card
+                    key={coffeeStore.id}
+                    name={coffeeStore.name}
+                    imgUrl={coffeeStore.imgUrl}
+                    href={`/coffee-store/${coffeeStore.id}`}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
